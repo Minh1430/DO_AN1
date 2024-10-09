@@ -1,0 +1,5 @@
+﻿@model IEnumerable<WatchMovies.Models.ThongBao>
+@foreach (var i in Model)
+{
+    <li><a href="@i.Link">@i.NoiDung</a></li>
+}

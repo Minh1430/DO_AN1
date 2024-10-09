@@ -1,0 +1,50 @@
+.avatar-container {
+    position: relative;
+    display: inline-block;
+    margin-left: 40px;
+}
+
+.avatar {
+  border-radius: 50%; /* bo tròn ảnh*/
+  width: 40px;
+  height: 40px;
+}
+
+.avatar-username {
+  display: flex;
+  align-items: center;
+  cursor: pointer; /*hiện hình bàn tay*/
+}
+
+.username {
+    margin-left: 8px;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.avatar-username:hover .username {
+  color: rgb(255, 85, 165); /*đổi màu username khi hover*/
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 120px;
+}
+
+.dropdown-content a.dropdown-link {
+  background-color: rgb(43, 43, 49);
+  color: rgba(255, 255, 255, 0.75);
+  padding: 5px;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+
+  font-family: Ubuntu, sans-serif;
+  font-size: 16px;
+  font-weight: 300
+}
+
+.dropdown-content a.dropdown-link:hover {
+  color: rgb(255, 85, 165); /* đổi màu chữ item khi hover*/
+}

@@ -1,0 +1,75 @@
+﻿@model WatchMovies.Models.Phan
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Phan</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Phim.Ten)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Phim.Ten)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenPhan)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenPhan)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaUserTao)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaUserTao)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaUserSua)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaUserSua)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreateAt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreateAt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdateAt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UpdateAt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.isDel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.isDel)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

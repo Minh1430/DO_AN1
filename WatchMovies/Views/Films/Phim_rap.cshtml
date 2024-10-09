@@ -1,0 +1,56 @@
+﻿<section class="section section--first section--bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section__wrap">
+                    <!-- section title -->
+                    <h2 class="section__title">Thanh toán</h2>
+                    <!-- end section title -->
+                    <!-- Payment Form -->
+                    <form id="paymentForm" action="@Url.Action("Phim_rap", "Qrpay")" method="post">
+                        <div class="form-group" style="color:white">
+                            <label for="phuongthuc">Phương thức thanh toán:</label>
+                            <select id="phuongthuc" name="PhuongThucThanhToan" class="form-control">
+                                <option value="credit">Thẻ tín dụng</option>
+                                <option value="paypal">PayPal</option>
+                                <option value="qr">QR Code</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" style="color:white">
+                            <label for="soTien">Số tiền (VND):</label>
+                            <input type="number" id="soTien" name="SoTien" class="form-control" value="50000" readonly />
+                        </div>
+
+                        <div class="form-group">
+                            <!-- Thay thế thẻ <a> bằng nút submit -->
+                            <button type="submit" class="btn btn-primary" style="color: aqua; border: 2px solid white; border-radius: 5px;">Thanh toán</button>
+                        </div>
+                    </form>
+
+                    <!-- Thông báo thanh toán thành công -->
+                    <div id="successMessage" style="display:none; color: green; font-size: 18px; margin-top: 20px;">
+                        Thanh toán thành công!
+                    </div>
+                    <a href="/" class="btn btn-primary" style="color: aqua; border: 2px solid white; border-radius: 5px;">Quay về trang chủ</a>
+                    <!-- End Payment Form -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Xử lý sự kiện khi form được submit
+    document.getElementById("paymentForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Ngăn không cho form gửi đi
+
+        // Giả lập xử lý thanh toán thành công (nếu cần, thêm logic Ajax hoặc gọi API)
+
+        // Hiển thị thông báo thanh toán thành công
+        document.getElementById("successMessage").style.display = "block";
+
+        // Vô hiệu hóa nút "Thanh toán" sau khi nhấn để tránh người dùng nhấn lại
+        document.querySelector("button[type='submit']").disabled = true;
+    });
+</script>

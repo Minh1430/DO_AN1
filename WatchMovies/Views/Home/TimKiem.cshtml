@@ -1,0 +1,49 @@
+﻿@model PagedList.IPagedList<WatchMovies.Models.Phim>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" type="text/css" rel="stylesheet" />
+@{
+    ViewBag.Title = "TimKiem";
+}
+<section class="home">
+    <!-- catalog -->
+    <div class="catalog">
+        <div class="container">
+            <h2 style="color:hotpink">Tìm kiếm cho: @ViewBag.search</h2>
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    var path = "~/Content/img/film/" + item.HinhAnh;
+                    <!-- card -->
+                    <div class="col-6 col-sm-4 col-lg-3 col-xl-2">
+                        <div class="card">
+                            <div class="card__cover">
+                                <img src="@Url.Content(path)" alt="">
+                                <a href="@Url.Action("details","Films",new {id=item.MaPhim})" class="card__play">
+                                    <i class="icon ion-ios-play"></i>
+                                </a>
+                            </div>
+                            <div class="card__content">
+                                <h3 class="card__title"><a href="@Url.Action("details","Films",new {id=item.MaPhim})">@item.Ten</a></h3>
+                                <span class="card__category">
+                                    @foreach (var i in item.TheLoai_Phims)
+                                    {
+                                        var url = "/TheLoai/" + i.MaTheLoai;
+                                        <a href="@url">@i.TheLoai.Ten</a>
+                                    }
+                                </span>
+                                <span class="card__rate"><i class="icon ion-ios-star"></i>@item.SoSao</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end card -->
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end catalog -->
+<br />
+<div style="display:flex; align-items:center;flex-direction:column">
+    <span style="color:white">Trang @(Model.PageCount<Model.PageNumber?0:Model.PageNumber)/@Model.PageCount</span>
+    @Html.PagedListPager(Model, page => Url.Action("TimKiem", new { ViewBag.search, page }))
+</div>

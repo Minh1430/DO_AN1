@@ -1,0 +1,83 @@
+﻿@model WatchMovies.Models.Tap
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Tap</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.MaPhan)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaPhan)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ten)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ten)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Link)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Link)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaUserTao)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaUserTao)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatAT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatAT)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaUserSua)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaUserSua)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdatedAt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UpdatedAt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.isDel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.isDel)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

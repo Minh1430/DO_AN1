@@ -1,0 +1,209 @@
+﻿@model WatchMovies.Models.Phim
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="container-fluid pt-4 px-4">
+    <h2 class="text-primary">Thêm phim</h2>
+    <div class="bg-secondary rounded h-100 p-4">
+        @using (Html.BeginForm("Create", "Phims", new { area = "Admin" }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+        <input type="hidden" id="num" name="num" value="1" />
+        <div>
+            <h4 class="mb-4">Phim</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="row mb-3">
+                @Html.Label("Tên Phim", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Ten, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Ten, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                @Html.Label("Nội dung", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                <div class="col-md-10">
+                    <div class="form-floating">
+                        <textarea name="NoiDung" id="NoiDung" class="form-control" style="height: 250px;"></textarea>
+                    </div>
+                    @Html.ValidationMessageFor(model => model.NoiDung, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-10">
+                    <img id="output" style="width:120px; height:180px" src="" />
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                @Html.Label("Hình ảnh", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                <div class="col-md-10">
+                    <input type="file" name="hinhAnhFile" class="form-control" onchange="loadFile(event)" />
+                </div>
+            </div>
+
+
+     
+    <script>
+        // Bắt sự kiện thay đổi của select box
+        function selectChanged(valueSelected) {
+            // Ẩn tất cả các phần tử có id chứa label 'Link' và 'Phan'
+            $('#linkDiv').hide();
+            $('#phanDiv').hide();
+
+            // Hiện phần tử tương ứng với giá trị được chọn
+            if (valueSelected == '1') {
+                $('#linkDiv').show(); // Hiện phần tử có id 'phanDiv' - chứa label 'Phan'
+            } else if (valueSelected == '2') {
+                $('#phanDiv').show(); // Hiện phần tử có id 'linkDiv' - chứa label 'Link'
+            }
+        }
+    </script>
+       
+            <div class="row mb-3">
+                @Html.Label("Loại Phim", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                <div class="col-md-10">
+                    <select class="form-control" id="LoaiPhim" name="LoaiPhim" onchange="selectChanged(this.value)">
+                        <option value="1">Phim </option>
+                        <!--  <option value="2">Phim bộ</option>  -->
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-3" id="linkDiv">
+                @Html.Label("Link", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Link, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Link, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <script>
+                $(document).ready(function () {
+                    $("#addPhan").click(function (event) {
+                        var num = parseInt($("#num").val());
+                        event.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a>
+                        var newLink = "<a style='margin-left: 10px;margin-bottom:10px' class='btn btn-light' >Phần " + num + "</a>";
+                        $("#Phan").append(newLink);
+
+                        $("#num").val(num + 1);
+                    });
+                });
+                $(document).ready(function () {
+                    $("#removePhan").click(function (event) {
+                        var num = parseInt($("#num").val());
+                        if (num > 1) {
+                            event.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a>
+                            //var newLink = "<a style='margin-left: 10px;margin-bottom:10px' class='btn btn-success' >Phần " + num + "</a>";
+                            $("#Phan").children().last().remove();
+
+                            $("#num").val(num - 1);
+                        } else {
+                            alert("Không có Phần nào để xóa!");
+                        }
+                    });
+                });
+            </script>
+            <div class="row mb-3" id="phanDiv" style="display:none;">
+                @Html.Label("Phần", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                <div class="col-md-10" id="Phan">
+                    <a id="addPhan" href="#" class="btn btn-success" style="margin-right:10px">Thêm phần</a>
+                    <a id="removePhan" href="#" class="btn btn-danger">Xóa phần</a>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                @Html.Label("Đạo diễn", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DaoDien, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DaoDien, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                @Html.Label("Diễn viên", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DienVien, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DienVien, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                @Html.Label("Quốc gia", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.QuocGia, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.QuocGia, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                @Html.Label("Năm sản xuất", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.NamSX, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.NamSX, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                @Html.Label("Thời lượng", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ThoiLuong, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ThoiLuong, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                @Html.Label("Chất lượng", "Chất lượng", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                <div class="col-md-10">
+                    @Html.DropDownList("MaChatLuong", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.MaChatLuong, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                @Html.Label("Thể loại", htmlAttributes: new { @class = "col-form-label col-sm-2 pt-0" })
+                <div class="col-md-10">
+                    @foreach (var theLoai in ViewBag.TheLoais)
+                    {
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="selectedTheLoais" value="@theLoai.MaTheLoai" /> @theLoai.Ten
+                        </div>
+                    }
+                </div>
+            </div>
+            @*<div class="row mb-3">
+            <label class="col-form-label col-sm-2 pt-0">Checkbox</label>
+            <div class="col-sm-10">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="gridCheck1">
+                    <label class="form-check-label" for="gridCheck1">
+                        Check me out
+                    </label>
+                </div>
+            </div>
+        </div>*@
+
+            <div class="row mb-3">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Thêm" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+</div>
+<div class="container-fluid pt-4 px-4">
+    <div>
+        @Html.ActionLink("Quay lại", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+    </div>
+</div>
+@*Tải lại ảnh khi thay đổi trong input*@
+<script>
+    var loadFile = function (event) {
+        var image = document.getElementById('output');
+        image.src = URL.createObjectURL(event.target.files[0]);
+    }
+</script>

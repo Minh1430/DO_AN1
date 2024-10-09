@@ -1,0 +1,41 @@
+﻿@model WatchMovies.Models.ChatLuong
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="container-fluid pt-4 px-4">
+    <h2 class="text-primary">Sửa chất lượng</h2>
+    <div class="bg-secondary rounded h-100 p-4">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div>
+                <h4 class="mb-4">Chất lượng</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.MaChatLuong)
+
+                <div class="row mb-3">
+                    @Html.Label("Tên chất lượng", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Ten, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Ten, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Lưu" class="btn btn-success" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<div class="container-fluid pt-4 px-4">
+    <div>
+        @Html.ActionLink("Quay lại", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+    </div>
+</div>

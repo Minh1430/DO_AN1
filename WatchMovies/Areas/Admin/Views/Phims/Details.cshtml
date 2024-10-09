@@ -1,0 +1,162 @@
+﻿@model WatchMovies.Models.Phim
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var path = "~/Content/img/film/" + Model.HinhAnh;
+}
+
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary rounded h-100 p-4">
+        <h2 class="text-primary">Chi tiết phim</h2>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt class="text-white">
+                Tên chất lượng
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ChatLuong.Ten)
+            </dd>
+
+            <dt class="text-white">
+                Tên phim
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Ten)
+            </dd>
+
+            <dt class="text-white">
+                Loại phim
+            </dt>
+
+            @{ if (Model.LoaiPhim==1){
+                    <dd>
+                    Phim lẻ
+                </dd>
+            }
+            else{
+                <dd>
+                    Phim bộ
+                </dd>
+            }}
+
+            <dt class="text-white">
+                @Html.DisplayNameFor(model => model.Link)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Link)
+            </dd>
+
+            <dt class="text-white">
+                Nội dung
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.NoiDung)
+            </dd>
+
+            <dt class="text-white">
+                Hình ảnh
+            </dt>
+
+            <dd>
+                <img style="width:200px; height:300px" src="@Url.Content(path)" /><br />
+                @Html.DisplayFor(model => model.HinhAnh)
+            </dd>
+
+            <dt class="text-white">
+                Đạo diễn
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DaoDien)
+            </dd>
+
+            <dt class="text-white">
+                Diễn viên
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DienVien)
+            </dd>
+
+            <dt class="text-white">
+                Quốc gia
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.QuocGia)
+            </dd>
+
+            <dt class="text-white">
+                Năm sản xuất
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.NamSX)
+            </dd>
+
+            <dt class="text-white">
+                Thời lượng
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ThoiLuong)
+            </dd>
+
+            <dt class="text-white">
+                Lượt xem
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.LuotXem)
+            </dd>
+
+            <dt class="text-white">
+                Số lượng đánh giá
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.SoLuongVote)
+            </dd>
+
+            <dt class="text-white">
+                Số sao
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.SoSao)
+            </dd>
+
+            <dt class="text-white">
+                Số lượng bình luận
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.SoLuongComment)
+            </dd>
+
+            <dt class="text-white">
+                Thể loại phim
+            </dt>
+            @{ var theLoai = "";}
+            <dd>
+                @foreach (var i in Model.TheLoai_Phims)
+                {
+                    theLoai = theLoai + i.TheLoai.Ten + ", ";
+                }
+                <label>@theLoai.Substring(0, theLoai.Length - 2)</label>
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<div class="container-fluid pt-4 px-4">
+    <p>
+        <a class="btn btn-sm btn-warning" href="@Url.Action("Edit","Phims", new {id=Model.MaPhim})">Sửa</a> |
+        <a class="btn btn-sm btn-primary" href="@Url.Action("Index","Phims", new {id=Model.MaPhim})">Quay lại</a>
+    </p>
+</div>

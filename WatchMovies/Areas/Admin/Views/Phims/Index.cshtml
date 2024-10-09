@@ -1,0 +1,83 @@
+﻿@model PagedList.IPagedList<WatchMovies.Models.Phim>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" type="text/css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+@*<p>
+        @Html.ActionLink("Create New", "Create",new {@class= "btn btn-primary" })
+    </p>*@
+<!-- Recent Sales Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary text-center rounded p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Danh sách phim</h6>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <a href="@Url.Action("Create","Phims")" class="btn btn-success">Thêm mới</a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+                <thead>
+                    <tr class="text-white">
+                        @*<th scope="col"><input class="form-check-input" type="checkbox"></th>*@
+                        <th scope="col">Tên phim</th>
+                        <th scope="col">Lượt xem</th>
+                        <th scope="col">Số sao</th>
+                        <th scope="col">Thể loại</th>
+                        <th scope="col">Lượt comment</th>
+                        <th scope="col">Lượt đánh giá</th>
+                        <th scope="col">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var theLoai = "";
+                        <tr>
+                            @*<td><input class="form-check-input" type="checkbox"></td>*@
+                            <td>@item.Ten</td>
+                            <td>@item.LuotXem</td>
+                            <td>@item.SoSao</td>
+                            <td>
+                                @foreach (var i in item.TheLoai_Phims)
+                                {
+                                    theLoai = theLoai + i.TheLoai.Ten + ", ";
+                                }
+                                <label>@theLoai.Substring(0, theLoai.Length - 2)</label>
+                            </td>
+                            <td>@item.SoLuongComment</td>
+                            <td>@item.SoLuongVote</td>
+                            <td>
+                                <a class="btn btn-sm btn-info" href="@Url.Action("Details","Phims", new {id=item.MaPhim})">Xem</a>
+                                <a class="btn btn-sm btn-warning" href="@Url.Action("Edit","Phims", new {id=item.MaPhim})">Sửa</a>
+                                <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.MaPhim')">Xóa</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Recent Sales End -->
+<br />
+<div style="display:flex; align-items:center;flex-direction:column">
+    <span style="color:white">Trang @(Model.PageCount<Model.PageNumber?0:Model.PageNumber)/@Model.PageCount</span>
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+</div>
+
+@*thông báo xóa phim*@
+<script>
+    function confirmDelete(MaPhim) {
+        var result = confirm("Xác nhận xóa phim?");
+
+        if (result) {
+            // Nếu người dùng đồng ý xóa, chuyển đến action xóa trong controller
+            window.location = '/Admin/Phims/Delete/' + MaPhim;
+        }
+    }
+</script>

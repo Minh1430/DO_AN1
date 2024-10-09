@@ -1,0 +1,79 @@
+﻿@model WatchMovies.Models.BaiDang
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var path = "~/Content/img/post/" + Model.HinhAnh;
+}
+
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary rounded h-100 p-4">
+        <h2 class="text-primary">Chi tiết bài đăng</h2>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt class="text-white">
+                @Html.DisplayNameFor(model => model.UserTao.Ten)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.UserTao.Ten)
+            </dd>
+
+            <dt class="text-white">
+                @Html.DisplayNameFor(model => model.Ten)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Ten)
+            </dd>
+
+            <dt class="text-white">
+                @Html.DisplayNameFor(model => model.NoiDung)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.NoiDung)
+            </dd>
+
+            <dt class="text-white">
+                @Html.DisplayNameFor(model => model.HinhAnh)
+            </dt>
+
+            <dd>
+                <img style="width:200px; height:300px" src="@Url.Content(path)" /><br />
+                @Html.DisplayFor(model => model.HinhAnh)
+            </dd>
+
+            <dt class="text-white">
+                @Html.DisplayNameFor(model => model.DaoDien)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DaoDien)
+            </dd>
+
+            <dt class="text-white">
+                @Html.DisplayNameFor(model => model.DienVien)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DienVien)
+            </dd>
+
+            <dt class="text-white">
+                @Html.DisplayNameFor(model => model.NgayTao)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.NgayTao)
+            </dd>
+
+        </dl>
+    </div>
+</div>
+<div class="container-fluid pt-4 px-4">
+    <p>
+        <a class="btn btn-sm btn-warning" href="@Url.Action("Edit","BaiDangs", new {id=Model.MaBaiDang})">Sửa</a> |
+        <a class="btn btn-sm btn-primary" href="@Url.Action("Index","BaiDangs", new {id=Model.MaBaiDang})">Quay lại</a>
+    </p>
+</div>

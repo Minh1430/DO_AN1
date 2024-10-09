@@ -1,0 +1,29 @@
+﻿@model WatchMovies.Models.ChatLuong
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary rounded h-100 p-4">
+        <h2 class="text-primary">Chi tiết chất lượng</h2>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt class="text-white">
+                Tên chất lượng
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Ten)
+            </dd>
+
+        </dl>
+    </div>
+</div>
+
+<div class="container-fluid pt-4 px-4">
+    <p>
+        <a class="btn btn-sm btn-warning" href="@Url.Action("Edit","ChatLuongs", new {id=Model.MaChatLuong})">Sửa</a> |
+        <a class="btn btn-sm btn-primary" href="@Url.Action("Index","ChatLuongs", new {id=Model.MaChatLuong})">Quay lại</a>
+    </p>
+</div>

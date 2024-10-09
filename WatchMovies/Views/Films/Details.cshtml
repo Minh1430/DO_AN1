@@ -1,0 +1,678 @@
+﻿
+@{
+    ViewBag.Title = "details";
+
+    var path = "~/Content/img/film/" + Model.HinhAnh;
+    string link = "null";
+    string title = "";
+    int MaTap = 0;
+    if (Model.LoaiPhim == 1)
+    {
+        link = Model.Link;
+    }
+    if(Model.LoaiPhim == 2 && ViewBag.Tap != null)
+    {
+        MaTap = ViewBag.Tap.MaTap;
+        link = ViewBag.Tap.Link;
+        title = ViewBag.Tap.Phan.TenPhan + " - " + ViewBag.Tap.Ten;
+    }
+    if (Session["Ma"] == null)
+    {
+        Session["MaPhim"]= Model.MaPhim;
+    }
+}
+<!-- details -->
+<section class="section details">
+    <!-- details background -->
+    <div class="details__bg"></div>
+    <!-- end details background -->
+    <!-- details content -->
+    <div class="container">
+        <div class="row">
+            <!-- title -->
+            <div class="col-12">
+                <h1 class="details__title">@Model.Ten</h1>
+            </div>
+            <!-- end title -->
+            <!-- content -->
+            <div class="col-12 col-xl-4">
+                <div class="card card--details">
+                    <div class="row">
+                        <!-- card cover -->
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-6">
+                            <div class="card__cover">
+                                <img src="@Url.Content(path)" alt=""><br />
+                                @{
+                                    if (ViewBag.DaThemVaoYeuThich)
+                                    {
+                                        <form method="post" action="@Url.Action("ThemVaoDanhSachYeuThich","Films")">
+                                            <input type="hidden" name="MaPhim" value="@Model.MaPhim" />
+                                            <button class="form__btn" type="submit">Thêm vào danh sách yêu thích</button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <form method="post" action="@Url.Action("XoaKhoiDanhSachYeuThich","Films")">
+                                            <input type="hidden" name="MaPhim" value="@Model.MaPhim" />
+                                            <button class="form__btn" type="submit">Xóa khỏi danh sách yêu thích</button>
+                                        </form>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <!-- end card cover -->
+                        <!-- card content -->
+                        <div class="col-12 col-sm-8 col-md-8 col-lg-9 col-xl-6">
+                            <div class="card__content">
+                                <div class="card__wrap">
+                                    <span class="card__rate"><i class="icon ion-ios-star"></i>@Model.SoSao</span>
+
+                                    <ul class="card__list">
+                                        <li>@Model.ChatLuong.Ten</li>
+                                    </ul>
+                                </div>
+
+                                <ul class="card__meta">
+                                    <li><span>Lượt xem:</span>@Model.LuotXem </li>
+                                    <li><span>Đạo diễn:</span> <a href="#">@Model.DaoDien</a> </li>
+                                    <li><span>Năm sản xuất:</span> @Model.NamSX</li>
+                                    <li><span>Thời lượng:</span> @Model.ThoiLuong phút</li>
+                                    <li><span>Quốc gia:</span> <a href="#">@Model.QuocGia</a> </li>
+                                    <li>
+                                        <span>Thể loại:</span>
+                                        @foreach (var i in Model.TheLoai_Phims)
+                                        {
+                                            var url = "/TheLoai/" + i.MaTheLoai;
+                                            <a href="@url">@i.TheLoai.Ten</a>
+                                        }
+                                    </li>
+                                    <li><span>Diễn viên:</span> @Model.DienVien </li>
+                                </ul>
+
+
+                            </div>
+                        </div>
+                        <!-- end card content -->
+                    </div>
+                </div>
+            </div>
+            <!-- end content -->
+            <!-- video -->
+            <div class="col-12 col-xl-5">
+                @if (!string.IsNullOrEmpty(title))
+                {
+                    <label style="color:white">@title</label>
+                }
+                <video controls playsinline id="player" onplay="logVideoView()">
+                    <!-- Video files -->
+                    <source src="@Url.Content(link)" type="video/mp4">
+                </video>
+
+            </div>
+            <!-- end video -->
+
+            @if (Model.LoaiPhim == 2)
+            {
+                <!-- film session -->
+                <div class="col-12 col-xl-3">
+                    <div class="accordion" id="accordion">
+                        @foreach (var item in ViewBag.Phan)
+                        {
+                            string idhead = "heading" + item.MaPhan;
+                            string idCollapse = "collapse" + item.MaPhan;
+                            <div class="accordion__card">
+                                <div class="card-header" id="@idhead">
+                                    <button type="button" data-toggle="collapse" data-target="#@idCollapse" aria-expanded="false" aria-controls="@idCollapse">
+                                        <span>@item.TenPhan</span>
+                                        <span>@item.CreateAt.ToString("dd/MM/yyyy")</span>
+                                    </button>
+                                </div>
+
+                                <div id="@idCollapse" class="collapse" aria-labelledby="@idhead" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <table class="accordion__list">
+                                            <thead>
+                                                <tr>
+                                                    <th>Tập</th>
+                                                    <th>Ngày ra mắt</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var i in item.Taps)
+                                                {
+                                                    if (i.isDel == false)
+                                                    {
+                                                        <tr>
+                                                            <td onclick="selectTap(@Model.MaPhim,@i.MaTap)">@i.Ten</td>
+                                                            <td onclick="selectTap(@Model.MaPhim,@i.MaTap)">@i.CreateAt.ToString("dd/MM/yyyy")</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <!-- end film session -->
+            }
+            <p></p>
+            <div class="col-12">
+                <span style="color: rgb(255, 255, 255)">@Model.NoiDung</span>
+            </div>
+
+            <div class="col-12">
+                <div class="details__wrap">
+                    <!-- availables -->
+                    <div class="details__devices">
+                        <span class="details__devices-title">Những thiết bị tương thích:</span>
+                        <ul class="details__devices-list">
+                            <li><i class="icon ion-logo-apple"></i><span>IOS</span></li>
+                            <li><i class="icon ion-logo-android"></i><span>Android</span></li>
+                            <li><i class="icon ion-logo-windows"></i><span>Windows</span></li>
+                            <li><i class="icon ion-md-tv"></i><span>Smart TV</span></li>
+                        </ul>
+                    </div>
+                    <!-- end availables -->
+                    <!-- share -->
+                    @*<div class="details__share">
+                    <span class="details__share-title">Share with friends:</span>
+
+                    <ul class="details__share-list">
+                        <li class="facebook"><a href="#"><i class="icon ion-logo-facebook"></i></a></li>
+                        <li class="instagram"><a href="#"><i class="icon ion-logo-instagram"></i></a></li>
+                        <li class="twitter"><a href="#"><i class="icon ion-logo-twitter"></i></a></li>
+                        <li class="vk"><a href="#"><i class="icon ion-logo-vk"></i></a></li>
+                    </ul>
+                </div>*@
+                    <!-- end share -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end details content -->
+</section>
+<!-- end details -->
+<!-- content -->
+<section class="content">
+    <div class="content__head">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- content title -->
+                    <h2 class="content__title">Phản hồi</h2>
+                    <!-- end content title -->
+                    <!-- content tabs nav -->
+                    <ul class="nav nav-tabs content__tabs" id="content__tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">Bình luận</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Đánh giá</a>
+                        </li>
+                    </ul>
+                    <!-- end content tabs nav -->
+                    <!-- content mobile tabs nav -->
+                    <div class="content__mobile-tabs" id="content__mobile-tabs">
+                        <div class="content__mobile-tabs-btn dropdown-toggle" role="navigation" id="mobile-tabs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <input type="button" value="Comments">
+                            <span></span>
+                        </div>
+
+                        <div class="content__mobile-tabs-menu dropdown-menu" aria-labelledby="mobile-tabs">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item"><a class="nav-link active" id="1-tab" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">Bình luận</a></li>
+
+                                <li class="nav-item"><a class="nav-link" id="2-tab" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Đánh giá</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- end content mobile tabs nav -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-8 col-xl-8">
+                <!-- content tabs -->
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="1-tab">
+                        <div class="row">
+                            <!-- comments -->
+                            <div class="col-12">
+                                <div class="comments">
+                                    <!-- form -->
+                                    @*<form method="post" action="@Url.Action("Comment","Films")" class="form">
+            <input type="hidden" name="MaPhim" value="@Model.MaPhim" />
+            <textarea id="text" class="form__textarea" placeholder="Add comment" name="NoiDung"></textarea>
+            <button type="submit" class="form__btn">Gửi</button>
+        </form>*@
+                                    @using (Ajax.BeginForm("CommentAjax", "Films", new AjaxOptions
+                                    {
+                                        HttpMethod = "Post",
+                                        InsertionMode = InsertionMode.InsertBefore,
+                                        UpdateTargetId = "CommentListAjax",
+                                        OnBegin = "CheckLogin",
+                                        OnSuccess = "ClearTextarea",
+
+                                    }, new { @class = "form" }))
+                                    {
+                                        <input type="hidden" name="MaPhim" value="@Model.MaPhim" />
+                                        <input type="hidden" name="RepCommentID" id="RepCommentID" value="0"/>
+                                        <input type="hidden" name="MaTap" id="MaTap" value="0"/>
+                                        <textarea id="text" class="form__textarea" placeholder="Nhập bình luận" name="NoiDung"></textarea>
+                                        <button type="submit" class="form__btn">Gửi</button>
+                                    }
+                                    <!-- end form -->
+                                <ul class="comments__list" id="CommentListAjax">
+                                    @foreach (var item in ViewBag.CommentList)
+                                    {
+                                        <!-- comment items -->
+                                        <li class="comments__item">
+                                            <div class="comments__autor">
+                                                <img class="comments__avatar" src="~/Content/img/User/@item.User.HinhAnh" alt="">
+                                                <span class="comments__name">@item.User.Ten</span>
+                                                <span class="comments__time">@item.ThoiGian</span>
+                                            </div>
+                                            <p class="comments__text">@item.NoiDungComment</p>
+                                            <div class="comments__actions">
+                                                <div class="comments__rate">
+                                                    @*<button type="button"><i class="icon ion-md-thumbs-up"></i>12</button>
+
+                        <button type="button"><i class="icon ion-md-thumbs-down">7</i></button>*@
+                                                </div>
+
+                                                @*<button type="button"><i class="icon ion-ios-share-alt"></i>Reply</button>
+                    <button type="button"><i class="icon ion-ios-quote"></i>Quote</button>*@
+                                                @if (Session["Ma"] != null)
+                                                {
+                                                    <button onclick="showForm('@item.MaComment')" type="button"><i class="icon ion-ios-share-alt"></i>trả lời</button>
+                                                    <button onclick="confirmReport('@item.MaComment')" type="button"><i class="icon ion-ios-alert"></i>Report</button>
+                                                }
+                                            </div>
+                                        </li>
+                                        <!-- end comment items -->
+                                        <form style="display: none" method="post" class="form" id="form_@item.MaComment">
+                                            <input type="hidden" id="isShow_@item.MaComment" value="0" />
+
+                                            <input type="hidden" name="MaPhim" value="@item.MaPhim" />
+                                            <input type="hidden" name="RepCommentID" value="@item.MaComment" />
+                                            <input type="hidden" name="MaTap" id="MaTap" value="0" />
+                                            @{ string UserName = "@" + item.User.Ten + " ";}
+                                            <textarea name="NoiDung" id="NoiDung_@item.MaComment" placeholder="Nhập bình luận" class="form__textarea">@UserName</textarea>
+                                            <button onclick="submitCommentForm('@item.MaComment','@UserName',0)" class="form__btn">Gửi</button>
+                                        </form>
+
+                                        <li class="comments__item comments__item--answer">
+                                            <div id="@item.MaComment">
+                                                @foreach (var i in ViewBag.RepCommentList)
+                                                {
+                                                    if (i.RepCommentID == item.MaComment)
+                                                    {
+                                                        <div class="comments__autor">
+                                                            <img class="comments__avatar" src="~/Content/img/User/@i.User.HinhAnh" alt="">
+                                                            <span class="comments__name">@i.User.Ten</span>
+                                                            <span class="comments__time">@i.ThoiGian</span>
+                                                        </div>
+                                                        <p class="comments__text">@i.NoiDungComment</p>
+                                                        <div class="comments__actions">
+                                                            <div class="comments__rate">
+                                                            </div>
+                                                            @if (Session["Ma"] != null)
+                                                            {
+                                                                <button onclick="showForm('@i.MaComment')" type="button"><i class="icon ion-ios-share-alt"></i>trả lời</button>
+                                                                <button onclick="confirmReport('@i.MaComment')" type="button"><i class="icon ion-ios-alert"></i>Report</button>
+                                                            }
+                                                        </div>
+                                                        <form style="display: none" method="post" class="form" id="form_@i.MaComment">
+                                                            <input type="hidden" id="isShow_@i.MaComment" value="0" />
+
+                                                            <input type="hidden" name="MaPhim" value="@i.MaPhim" />
+                                                            <input type="hidden" name="RepCommentID" value="@i.RepCommentID" />
+                                                            <input type="hidden" name="MaTap" id="MaTap" value="0" />
+                                                            @{ string UserNameRepComment = "@" + i.User.Ten + " ";}
+                                                            <textarea name="NoiDung" id="NoiDung_@i.MaComment" placeholder="Nhập bình luận" class="form__textarea">@UserNameRepComment</textarea>
+                                                            <button onclick="submitCommentForm('@i.RepCommentID','@UserNameRepComment','@i.MaComment')" class="form__btn">Gửi</button>
+                                                        </form>
+                                                    }
+                                                }
+                                            </div>
+                                        </li>
+                                    }
+                                    }
+
+                                </ul>
+                                </div>
+                            </div>
+                            <!-- end comments -->
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="2-tab">
+                        <div class="row">
+                            <!-- reviews -->
+                            <div class="col-12">
+                                <div class="reviews">
+                                    <!-- form -->
+                                    @*<form method="post" action="@Url.Action("Vote","Films")" class="form" id="VoteForm" onsubmit="updateSliderValue()">
+                                            <textarea class="form__textarea" placeholder="Review" name="NoiDung"></textarea>
+                                            <div class="form__slider">
+                                                <div class="form__slider-rating" id="slider__rating"></div>
+                                                <div class="form__slider-value" id="form__slider-value"></div>
+                                            </div>
+                                            <input type="hidden" name="SoSao" id="SoSao" value="0" />
+                                            <input type="hidden" name="MaPhim" value="@Model.MaPhim" />
+                                            <script>
+                                                function updateSliderValue() {
+                                                    // Lấy giá trị hiện tại của slider
+                                                    var currentSliderValue = document.getElementById("form__slider-value").textContent;
+
+                                                    // Cập nhật giá trị vào trường input ẩn
+                                                    document.getElementById("SoSao").value = currentSliderValue;
+                                                }
+                                            </script>
+                                            <button type="submit" class="form__btn">Gửi</button>
+                                        </form>*@
+                                    @using (Ajax.BeginForm("VoteAjax", "Films", new AjaxOptions
+                                    {
+                                        HttpMethod = "Post",
+                                        InsertionMode = InsertionMode.InsertBefore,
+                                        UpdateTargetId = "VoteListAjax",
+                                        OnBegin = "CheckLogin",
+
+                                    }, new { @class = "form", @onsubmit = "updateSliderValue()" }))
+                                    {
+                                        <textarea class="form__textarea" placeholder="Review" name="NoiDung"></textarea>
+                                        <div class="form__slider">
+                                            <div class="form__slider-rating" id="slider__rating"></div>
+                                            <div class="form__slider-value" id="form__slider-value"></div>
+                                        </div>
+                                        <input type="hidden" name="SoSao" id="SoSao" value="0" />
+                                        <input type="hidden" name="MaPhim" value="@Model.MaPhim" />
+                                        
+                                        <button type="submit" class="form__btn">Gửi</button>
+                                    }
+                                    <!-- end form -->
+
+                                    <ul class="reviews__list" id="VoteListAjax">
+                                        @foreach (var item in ViewBag.VoteList)
+                                        {
+                                            <!-- review items -->
+                                            <li class="reviews__item">
+                                                <div class="reviews__autor">
+                                                    <img class="reviews__avatar" src="~/Content/img/User/@item.User.HinhAnh" alt="">
+                                                    <span class="reviews__name">@item.User.Ten</span>
+                                                    <span class="reviews__time">@item.ThoiGian</span>
+
+                                                    <span class="reviews__rating"><i class="icon ion-ios-star"></i>@item.SoSao</span>
+                                                </div>
+                                                <p class="reviews__text">@item.NoiDung</p>
+                                            </li>
+                                            <!-- end review items -->
+                                        }
+                                    </ul>
+
+                                </div>
+                            </div>
+                            <!-- end reviews -->
+                        </div>
+                    </div>
+                </div>
+                <!-- end content tabs -->
+            </div>
+
+            <!-- sidebar -->
+            <div class="col-12 col-lg-4 col-xl-4">
+                <div class="row">
+                    <!-- section title -->
+                    <div class="col-12">
+                        <h2 class="section__title section__title--sidebar">Gợi ý cho bạn</h2>
+                    </div>
+                    <!-- end section title -->
+                    @foreach (var item in ViewBag.GoiY)
+                    {
+                        var pathImg = "~/Content/img/film/" + item.HinhAnh;
+                        <!-- card -->
+                        <div class="col-6 col-sm-4 col-lg-6">
+                            <div class="card">
+                                <div class="card__cover">
+                                    <img src="@Url.Content(pathImg)" alt="">
+                                    <a href="@Url.Action("details","Films",new {id=item.MaPhim})" class="card__play">
+                                        <i class="icon ion-ios-play"></i>
+                                    </a>
+                                </div>
+                                <div class="card__content">
+                                    <h3 class="card__title"><a href="@Url.Action("details","Films",new {id=item.MaPhim})">@item.Ten</a></h3>
+                                    <span class="card__category">
+                                        @foreach (var i in item.TheLoai_Phims)
+                                        {
+                                            var url = "/TheLoai/" + i.MaTheLoai;
+                                            <a href="@url">@i.TheLoai.Ten</a>
+                                        }
+                                    </span>
+                                    <span class="card__rate"><i class="icon ion-ios-star"></i>@item.SoSao</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end card -->
+                    }
+
+                </div>
+            </div>
+            <!-- end sidebar -->
+        </div>
+    </div>
+</section>
+<!-- end content -->
+
+<script>
+    //Thông báo và chuyển đến báo cáo comment
+    function confirmReport(MaComment) {
+        var result = confirm("Xác nhận báo cáo comment này?");
+
+        if (result) {
+            // Nếu người dùng đồng ý xóa, chuyển đến action xóa trong controller
+            window.location = '/Films/ThemReport/?MaComment=' + MaComment;
+        }
+    }
+
+    //Kiểm tra login-chưa login sẽ chuyển đến trang login
+    function CheckLogin() {
+        var ok = @ViewBag.mauser.ToString().ToLower();
+        if (ok==true) {
+            window.location.href = '/Login/Login';
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    // Xóa nội dung của textarea
+    function ClearTextarea() {
+        document.getElementById("text").value = "";
+    }
+
+    // Gửi yêu cầu tăng view khi video được play
+    function logVideoView() {
+        var maphim = @Model.MaPhim;
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("XemPhim","Films")',
+            data: JSON.stringify({ MaPhim: maphim }),
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+        });
+    }
+
+    //Lấy sao vote
+    function updateSliderValue() {
+        // Lấy giá trị hiện tại của slider
+        var currentSliderValue = document.getElementById("form__slider-value").textContent;
+
+        // Cập nhật giá trị vào trường input ẩn
+        document.getElementById("SoSao").value = currentSliderValue;
+    }
+
+    //RepComment Ajax
+    function submitCommentForm(MaComment, UserName, MaRepComment) {
+        if (MaRepComment == 0) {
+            MaRepComment = MaComment;
+        }
+        $('#form_' + MaRepComment).submit(function (e) {
+            e.preventDefault(); // Ngăn chặn chuyển hướng mặc định của biểu mẫu
+            var formData = $(this).serialize(); // Lấy dữ liệu từ biểu mẫu
+            $.ajax({
+                type: "POST",
+                url: "/Films/CommentAjax", // Đường dẫn tới action xử lý comment
+                data: formData,
+                success: function (response) {
+                    $('#isShow_' + MaComment).val(0);
+                    $('#NoiDung_' + MaComment).val(UserName)
+                    $('#form_' + MaRepComment).hide();
+                    $('#' + MaComment).append(response);
+                },
+                error: function (xhr, status, error) {
+                    // Xử lý lỗi ở đây nếu cần
+                    alert("Loi");
+                }
+            });
+        });
+    }
+
+    //Hiển thị form comment
+    function showForm(MaComment) {
+        var isShow = $('#isShow_' + MaComment).val();
+        if (isShow == 0) {
+            $('#isShow_' + MaComment).val(1);
+            $('#form_' + MaComment).show();
+        }
+        else {
+            $('#isShow_' + MaComment).val(0);
+            $('#form_' + MaComment).hide();
+        }
+    }
+
+    //Chọn tập phim
+    function selectTap(MaPhim, MaTap) {
+        window.location.href = '/Films/Details?id=' + MaPhim + '&MaTap=' + MaTap;
+    }
+
+    //Lưu currentTime trước khi unload
+    function saveMovieTimeBeforeUnload() {
+        // Bắt sự kiện trước khi trang unload (trước khi người dùng rời khỏi trang)
+        window.addEventListener('beforeunload', function (event) {
+            // Lấy thời gian hiện tại của video
+            var video = document.getElementById("player");
+            var currentTime = video.currentTime;
+            // Gửi dữ liệu lên máy chủ thông qua Ajax
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/Films/SaveCurrentTime', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            // Dữ liệu gửi đi, trong trường hợp này là currentTime
+            var data = {
+                MaPhim: @Model.MaPhim,
+                MaTap: @MaTap,
+                time: currentTime
+            };
+
+            // Chuyển đổi dữ liệu sang định dạng JSON
+            var jsonData = JSON.stringify(data);
+
+            // Xử lý phản hồi từ máy chủ (nếu cần)
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log('Dữ liệu đã được lưu thành công.');
+                    } else {
+                        console.error('Lỗi khi lưu dữ liệu.');
+                    }
+                }
+            };
+
+            // Gửi dữ liệu đi
+            xhr.send(jsonData);
+        });
+    }
+    //Lấy curentTime từ cookies
+    function getTimeFromCookie() {
+        var video = document.getElementById("player");
+        //Phim lẻ
+        if (@Model.LoaiPhim == 1) {
+            var MaPhim = @Model.MaPhim;
+            // Lấy cookie "WatchedMovies1"
+            var moviesCookie = document.cookie.replace(/(?:(?:^|.*;\s*)WatchedMovies1\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
+            // Kiểm tra xem cookie có tồn tại không
+            if (moviesCookie) {
+                // Chuyển đổi dữ liệu cookie thành đối tượng JavaScript
+                var watchedMovies = JSON.parse(decodeURIComponent(moviesCookie));
+
+                // Lấy giá trị (value) theo key (MaPhim)
+                var Time = watchedMovies[MaPhim]; // Lấy giá trị (value) theo key (MaPhim)
+
+                // Kiểm tra xem có giá trị (value) tương ứng với key (MaPhim) không
+                if (Time !== undefined) {
+                    var continued = confirm("Xem tiếp");
+                    if (continued) {
+                        video.currentTime = Time;
+                        // Phát video
+                        video.play();
+                    }
+                } else {
+                    console.log('Không có dữ liệu cho MaPhim ' + MaPhim);
+                    return null; // Trả về null nếu không tìm thấy giá trị tương ứng
+                }
+            } else {
+                console.log('Không có dữ liệu từ cookie.');
+                return null; // Trả về null nếu không có cookie
+            }
+        }
+        //Phim bộ
+        else if(@Model.LoaiPhim == 2 && @MaTap > 0){
+            var MaTap = @MaTap;
+            // Lấy cookie "WatchedMovies2"
+            var moviesCookie = document.cookie.replace(/(?:(?:^|.*;\s*)WatchedMovies2\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
+            // Kiểm tra xem cookie có tồn tại không
+            if (moviesCookie) {
+                // Chuyển đổi dữ liệu cookie thành đối tượng JavaScript
+                var watchedMovies = JSON.parse(decodeURIComponent(moviesCookie));
+
+                // Lấy giá trị (value) theo key (MaTap)
+                var Time = watchedMovies[MaTap]; // Lấy giá trị (value) theo key (MaTap)
+
+                // Kiểm tra xem có giá trị (value) tương ứng với key (MaTap) không
+                if (Time !== undefined) {
+                    var continued = confirm("Xem tiếp");
+                    if (continued) {
+                        video.currentTime = Time;
+                        // Phát video
+                        video.play();
+                    }
+                } else {
+                    console.log('Không có dữ liệu cho MaTap ' + MaTap);
+                    return null; // Trả về null nếu không tìm thấy giá trị tương ứng
+                }
+            } else {
+                console.log('Không có dữ liệu từ cookie.');
+                return null; // Trả về null nếu không có cookie
+            }
+        }
+    }
+
+
+</script>
+<script defer>
+    $(document).ready(function () {
+        // Hiển thị thông báo sau khi tất cả các thành phần đã được tải xong
+        saveMovieTimeBeforeUnload();
+        getTimeFromCookie();
+    });
+</script>

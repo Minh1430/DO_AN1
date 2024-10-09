@@ -1,0 +1,82 @@
+﻿.notification {
+    position: relative;
+    display: inline-block;
+    margin-left: 40px;
+}
+
+.bell-icon {
+    position: relative;
+    cursor: pointer;
+}
+
+    .bell-icon img {
+        border-radius: 50%; /* Bo tròn ảnh */
+        width: 40px; /* Định kích thước của ảnh */
+        height: 40px; /* Đảm bảo ảnh vẫn là hình tròn */
+    }
+
+.notification-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 50%;
+}
+
+.notification-list {
+    display: none;
+    position: absolute;
+    background-color: rgb(43, 43, 49);
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    border-radius: 4px;
+    z-index: 1;
+    max-height: 200px; /* Giới hạn chiều cao của phần danh sách thông báo */
+    overflow-y: auto; /* Hiển thị thanh cuộn khi có nhiều hơn 5 thông báo */
+}
+
+    .notification-list::-webkit-scrollbar {
+        width: 3px; /* Chiều rộng của thanh cuộn */
+    }
+
+    .notification-list::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.3); /* Màu nền của thanh cuộn */
+    }
+
+    .notification-list::-webkit-scrollbar-thumb {
+        background: rgb(255, 85, 165); /* Màu của thanh cuộn */
+        border-radius: 0px; /* Độ cong của thanh cuộn */
+    }
+
+        .notification-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 85, 165, 0.8); /* Màu của thanh cuộn khi được hover */
+        }
+
+    .notification-list ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .notification-list ul li {
+            padding: 10px;
+            border-bottom: 1px solid rgb(255, 85, 165);
+        }
+
+            .notification-list ul li a {
+                color: rgba(255, 255, 255, 0.75);
+                text-decoration: none;
+                font-family: Ubuntu, sans-serif;
+                font-size: 14px;
+                font-weight: 300;
+                display: block;
+            }
+
+                .notification-list ul li a:hover {
+                    color: rgb(255, 85, 165);
+                    text-decoration: none;
+                }

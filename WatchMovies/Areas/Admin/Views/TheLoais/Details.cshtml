@@ -1,0 +1,28 @@
+﻿@model WatchMovies.Models.TheLoai
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary rounded h-100 p-4">
+        <h2 class="text-primary">Chi tiết thể loại</h2>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt class="text-white">
+                Tên thể loại
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Ten)
+            </dd>
+
+        </dl>
+    </div>
+</div>
+<div class="container-fluid pt-4 px-4">
+    <p>
+        <a class="btn btn-sm btn-warning" href="@Url.Action("Edit","TheLoais", new {id=Model.MaTheLoai})">Sửa</a> |
+        <a class="btn btn-sm btn-primary" href="@Url.Action("Index","TheLoais", new {id=Model.MaTheLoai})">Quay lại</a>
+    </p>
+</div>

@@ -1,0 +1,445 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600%7CUbuntu:300,400,500,700" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="~/Content/css/bootstrap-reboot.min.css">
+    <link rel="stylesheet" href="~/Content/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="~/Content/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/Content/css/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="~/Content/css/nouislider.min.css">
+    <link rel="stylesheet" href="~/Content/css/ionicons.min.css">
+    <link rel="stylesheet" href="~/Content/css/plyr.css">
+    <link rel="stylesheet" href="~/Content/css/photoswipe.css">
+    <link rel="stylesheet" href="~/Content/css/default-skin.css">
+    <link rel="stylesheet" href="~/Content/css/main.css">
+    <link href="~/Content/css/styles.css" rel="stylesheet" />
+    <link href="~/Content/css/avatar.css" rel="stylesheet" />
+    <!-- JS -->
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/js/owl.carousel.min.js"></script>
+    <script src="~/Scripts/js/jquery.mousewheel.min.js"></script>
+    <script src="~/Scripts/js/jquery.mCustomScrollbar.min.js"></script>
+    <script src="~/Scripts/js/wNumb.js"></script>
+    <script src="~/Scripts/js/nouislider.min.js"></script>
+    <script src="~/Scripts/js/plyr.min.js"></script>
+    <script src="~/Scripts/js/jquery.morelines.min.js"></script>
+    <script src="~/Scripts/js/photoswipe.min.js"></script>
+    <script src="~/Scripts/js/photoswipe-ui-default.min.js"></script>
+    <script src="~/Scripts/js/main.js"></script>
+
+
+    @*<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>*@
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="~/Content/icon/favicon-32x32.png" sizes="32x32">
+    <link rel="apple-touch-icon" href="~/Content/icon/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="~/Content/icon/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="~/Content/icon/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="~/Content/icon/apple-touch-icon-144x144.png">
+
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="Dmitry Volkov">
+    <title>Movie– Online Movies, TV Shows & Cinema HTML Template</title>
+
+</head>
+<body id="body" class="body">
+
+    <!-- header -->
+    <header class="header">
+        <div class="header__wrap">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="header__content">
+                            <!-- header logo -->
+                            <a href="@Url.Action("Index","Home")" class="header__logo" >
+                                <img src="~/images/logo.png" width="100" height="80" alt="">
+                            </a>
+                            <!-- end header logo -->
+                            <!-- header nav -->
+                            <ul class="header__nav">
+                                <!-- dropdown -->
+                                <li class="header__nav-item">
+                                    <a class="dropdown-toggle header__nav-link" href="#" role="button" id="dropdownMenuCatalog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Thể loại</a>
+
+                                    <ul class="dropdown-menu header__dropdown-menu" aria-labelledby="dropdownMenuCatalog">
+                                        @{Html.RenderAction("MenuTheLoai", "Home");}
+                                    </ul>
+                                </li>
+                                <!-- end dropdown -->
+                                <!-- dropdown -->
+                                <li class="header__nav-item">
+                                    <a class="dropdown-toggle header__nav-link" href="#" role="button" id="dropdownMenuHome" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Xem danh sách</a>
+
+                                    <ul class="dropdown-menu header__dropdown-menu" aria-labelledby="dropdownMenuHome">
+                                        <li><a href="@Url.Action("XemDanhSachYeuThich","Home")">Yêu thích</a></li>
+                                        <li><a href="@Url.Action("XemLichSuXem","Home")">Lịch sử xem</a></li>
+                                    </ul>
+                                </li>
+                                <!-- end dropdown -->
+
+                                <li class="header__nav-item">
+                                    <a href="@Url.Action("XemBaiDang","Films")" class="header__nav-link">Bài đăng</a>
+                                </li>
+                                <li class="header__nav-item">
+                                    <a href="@Url.Action("Phim_rap","Films")" class="header__nav-link">Thanh toán</a>
+                                </li>
+
+                                <li class="header__nav-item">
+                                    <a href="@Url.Action("qrpay","Films")" class="header__nav-link">QR PAY</a>
+                                </li>
+                                <!-- dropdown -->
+                                @*<li class="dropdown header__nav-item">
+            <a class="dropdown-toggle header__nav-link header__nav-link--more" href="#" role="button" id="dropdownMenuMore" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon ion-ios-more"></i></a>
+
+            <ul class="dropdown-menu header__dropdown-menu" aria-labelledby="dropdownMenuMore">
+                <li><a href="about.html">About</a></li>
+                <li><a href="signin.html">Sign In</a></li>
+                <li><a href="signup.html">Sign Up</a></li>
+                <li><a href="404.html">404 Page</a></li>
+            </ul>
+        </li>*@
+                                <!-- end dropdown -->
+                            </ul>
+                            <!-- end header nav -->
+                            <!-- header auth -->
+                            <div class="header__auth">
+                                <button class="header__search-btn" type="button">
+                                    <i class="icon ion-ios-search"></i>
+                                </button>
+
+                                @{
+                                    if (Session["Ma"] == null)
+                                    {
+                                        <a href="@Url.Action("Login","Login")" class="header__sign-in">
+                                            <i class="icon ion-ios-log-in"></i>
+                                            <span>Login</span>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        
+                                        //avatar control
+                                        <div class="avatar-container" id="avatar-container">
+                                            <div class="avatar-username">
+                                                <img src="~/Content/img/User/@Session["HinhAnh"]" alt="Avatar" class="avatar" id="avatar">
+                                                <span class="username">@Session["Ten"]</span>
+                                            </div>
+                                            <div class="dropdown-content" id="dropdown-content">
+                                                @if (Session["role"].ToString() == "Admin")
+                                                {
+                                                    <a target="_blank" href="@Url.Action("Index", "Dashboard", new { area = "Admin" })" class="dropdown-link">Dashboard</a>
+                                                }
+                                                <a href="@Url.Action("Logout","Login")" class="dropdown-link">Logout</a>
+                                            </div>
+                                        </div>
+                                        <div id="myModal" class="modal">
+                                            <div class="modal-content">
+                                                <span class="close">&times;</span>
+                                                <div style="margin-top:50px;" id="modalBody"></div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+
+                            <!-- end header auth -->
+                            <!-- header menu btn -->
+                            <button class="header__btn" type="button">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </button>
+                            <!-- end header menu btn -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- header search -->
+        <form method="post" action="@Url.Action("TimKiem","Home")" class="header__search">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="header__search-content">
+                            <input type="text" placeholder="Tên phim, đạo diễn, diễn viên" name="search">
+
+                            <button type="submit">Tìm kiếm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- end header search -->
+    </header>
+    <!-- end header -->
+    <!-- home -->
+
+    @RenderBody()
+    @{ WatchMovies.Models.Utils.DisConnect();}
+
+    <!-- end home -->
+    <!-- footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row justify-content-center"">
+
+                <!-- footer list -->
+                <div class="col text-center">
+                    <h6 class="footer__title">Số điện thoại</h6>
+                    <ul class="footer__list">
+                        <li><a href="#">0976294151</a></li>
+                    </ul>
+                </div>
+                <div class="col text-centertext-center">
+                    <h6 class="footer__title">Địa chỉ Email</h6>
+                    <ul class="footer__list">
+                        <li><a href="#">nguyenvanduy1430@gmail.com</a></li>
+                    </ul>
+                </div>
+                <div class="col text-center">
+                    <h6 class="footer__title">Mạng xã hội</h6>
+                    <ul class="footer__social">
+                        <li class="facebook"><a href="https://www.facebook.com/nguyen.vanduy.77920"><i class="icon ion-logo-facebook"></i>Facebook</a></li>
+                        @*<li class="instagram"><a href="#"><i class="icon ion-logo-instagram"></i></a></li>
+                <li class="twitter"><a href="#"><i class="icon ion-logo-twitter"></i></a></li>
+                <li class="vk"><a href="#"><i class="icon ion-logo-vk"></i></a></li>*@
+                    </ul>
+                </div>
+                <!-- end footer list -->
+
+            </div>
+        </div>
+    </footer>
+    <!-- end footer -->
+
+</body>
+<style>
+    /* CSS cho nút "Mở modal" */
+    .open-modal {
+        color: rgba(255, 255, 255, 0.75);
+        padding: 5px;
+        text-decoration: none; /* Loại bỏ gạch chân của liên kết */
+        display: block;
+        text-align: center;
+        font-family: Ubuntu, sans-serif;
+        font-size: 16px;
+        font-weight: 300;
+    }
+
+    /* CSS cho modal */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: red;
+            text-decoration: none;
+            cursor: pointer;
+        }
+</style>
+<script>
+    function toggleNotificationList(event, MaUser, SoLuongThongBaoMoi) {
+        var list = document.querySelector('.notification-list');
+        var isVisible = getComputedStyle(list).display !== 'none';
+
+        if (isVisible) {
+            list.style.display = 'none';
+        } else {
+            list.style.display = 'block';
+            document.body.addEventListener('click', hideNotificationListOnClickOutside);
+        }
+
+        // Ngăn chặn sự kiện click từ việc lan truyền ra ngoài
+        event.stopPropagation();
+        //Cập nhật đã xem thông báo
+        if (SoLuongThongBaoMoi > 0) {
+            $.ajax({
+                type: "POST",
+                url: "/Home/UpdateThongBaoDaXem?MaUser=" + MaUser,
+                success: function (response) {
+                    if (response) {
+                        $('#SLThongBao').hide();
+                    } else {
+                        alert("Có lỗi");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Xử lý lỗi ở đây nếu cần
+                    alert("Lỗi: " + error);
+                }
+            });
+        }
+    }
+
+    function hideNotificationListOnClickOutside(event) {
+        var list = document.querySelector('.notification-list');
+        if (!list.contains(event.target)) {
+            list.style.display = 'none';
+            document.body.removeEventListener('click', hideNotificationListOnClickOutside);
+        }
+    }
+
+    document.getElementById('avatar-container').addEventListener('click', function () {
+        var dropdownContent = document.getElementById('dropdown-content');
+        if (dropdownContent.style.display === 'block') {
+            dropdownContent.style.display = 'none';
+        } else {
+            dropdownContent.style.display = 'block';
+        }
+    });
+
+    document.addEventListener('click', function (event) {
+        var dropdownContent = document.getElementById('dropdown-content');
+        var avatarContainer = document.getElementById('avatar-container');
+        if (!avatarContainer.contains(event.target) && event.target !== document.getElementById('avatar')) {
+            dropdownContent.style.display = 'none';
+        }
+    });
+
+</script>
+
+<script>
+
+
+    //btn.onclick = function () {
+    //    // Gửi yêu cầu AJAX tới controller để lấy HTML của view
+    //    var xhr = new XMLHttpRequest();
+    //    xhr.onreadystatechange = function () {
+    //        if (xhr.readyState === 4 && xhr.status === 200) {
+    //            // Đặt nội dung HTML nhận được vào modal
+    //            modalBody.innerHTML = xhr.responseText;
+    //            modal.style.display = "block";
+    //        }
+    //    };
+    //    xhr.open("GET", "/User/Index", true);
+    //    xhr.send();
+    //}
+
+    //closeBtn.onclick = function () {
+    //    modal.style.display = "none";
+    //}
+
+    //window.onclick = function (event) {
+    //    if (event.target == modal) {
+    //        modal.style.display = "none";
+    //    }
+    //}
+
+    function openModal(MaUser) {
+        var modal = document.getElementById("myModal");
+        var closeBtn = document.getElementsByClassName("close")[0];
+        var modalBody = document.getElementById("modalBody");
+        // Gửi yêu cầu AJAX tới controller để lấy HTML của view
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // Đặt nội dung HTML nhận được vào modal
+                modalBody.innerHTML = xhr.responseText;
+                modal.style.display = "block";
+            }
+        };
+        xhr.open("GET", "/User/Index?MaUser=" + MaUser, true);
+        xhr.send();
+
+        closeBtn.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    }
+</script>
+<script>
+    var loadFile = function (event) {
+        var image = document.getElementById('output');
+        image.src = URL.createObjectURL(event.target.files[0]);
+    }
+
+    function submitFormUpdate() {
+        var formData = new FormData($('#formUpdate')[0]); // Sử dụng FormData để chứa dữ liệu form
+        var modal = document.getElementById("myModal");
+        $.ajax({
+            type: "POST",
+            url: "/User/Update",
+            data: formData,
+            processData: false, // Không xử lý dữ liệu
+            contentType: false, // Không set kiểu dữ liệu
+            success: function (response) {
+                if (response) {
+                    alert("Thay đổi thành công");
+                    modal.style.display = "none"; // Đóng modal sau khi lưu thành công
+                } else {
+                    alert("Có lỗi");
+                }
+            },
+            error: function (xhr, status, error) {
+                // Xử lý lỗi ở đây nếu cần
+                alert("Lỗi: " + error);
+            }
+        });
+    }
+
+    function submitFormChangePass() {
+        var formData = $('#formChangePass').serialize();
+        var modal = document.getElementById("myModal");
+        $.ajax({
+            type: "POST",
+            url: "/User/changePass",
+            data: formData,
+            success: function (response) {
+                if (response == "OK") {
+                    alert("Thay đổi mật khẩu thành công");
+                    modal.style.display = "none"; // Đóng modal sau khi lưu thành công
+                }
+                else {
+                    alert(response);
+                }
+            },
+            error: function (xhr, status, error) {
+                // Xử lý lỗi ở đây nếu cần
+                alert("Loi");
+            }
+        });
+    }
+</script>
+</html>

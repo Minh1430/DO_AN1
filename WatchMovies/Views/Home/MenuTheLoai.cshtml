@@ -1,0 +1,6 @@
+﻿@model IEnumerable<WatchMovies.Models.TheLoai>
+@foreach (var i in Model)
+{
+    var url = "/TheLoai/" + i.MaTheLoai;
+    <li><a href="@url">@i.Ten</a></li>
+}

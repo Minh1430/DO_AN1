@@ -1,0 +1,71 @@
+﻿
+@model PagedList.IPagedList<WatchMovies.Models.BaiDang>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" type="text/css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<!-- Recent Sales Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary text-center rounded p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Danh sách bài đăng</h6>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <a href="@Url.Action("Create","BaiDangs")" class="btn btn-success">Thêm mới</a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+                <thead>
+                    <tr class="text-white">
+                        @*<th scope="col"><input class="form-check-input" type="checkbox"></th>*@
+                        <th scope="col">Tên bài đăng</th>
+                        <th scope="col">Tên người đăng</th>
+                        <th scope="col">Ngày đăng</th>
+                        <th scope="col">Đạo diễn</th>
+                        <th scope="col">Diễn viên</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            @*<td><input class="form-check-input" type="checkbox"></td>*@
+                            <td>@item.Ten</td>
+                            <td>@item.UserTao.Ten</td>
+                            <td>@item.NgayTao</td>
+                            <td>@item.DaoDien</td>
+                            <td>@item.DienVien</td>
+                            <td>
+                                <a class="btn btn-sm btn-info" href="@Url.Action("Details","BaiDangs", new {id=item.MaBaiDang})">Xem</a>
+                                <a class="btn btn-sm btn-warning" href="@Url.Action("Edit","BaiDangs", new {id=item.MaBaiDang})">Sửa</a>
+                                <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.MaBaiDang')">Xóa</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Recent Sales End -->
+<br />
+<div style="display:flex; align-items:center;flex-direction:column">
+    <span style="color:white">Trang @(Model.PageCount<Model.PageNumber?0:Model.PageNumber)/@Model.PageCount</span>
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+</div>
+@*thông báo xóa bài đăng*@
+<script>
+    function confirmDelete(MaBaiDang) {
+        var result = confirm("Xác nhận xóa bài đăng?");
+
+        if (result) {
+            // Nếu người dùng đồng ý xóa, chuyển đến action xóa trong controller
+            window.location = '/Admin/BaiDangs/Delete/' + MaBaiDang;
+        }
+    }
+</script>

@@ -1,0 +1,41 @@
+﻿<!-- comment items -->
+<li class="comments__item">
+    <div class="comments__autor">
+        <img class="comments__avatar" src="~/Content/img/User/@Model.User.HinhAnh" alt="">
+        <span class="comments__name">@Model.User.Ten</span>
+        <span class="comments__time">@Model.ThoiGian</span>
+    </div>
+    <p class="comments__text">@Model.NoiDungComment</p>
+    <div class="comments__actions">
+        <div class="comments__rate">
+            @*<button type="button"><i class="icon ion-md-thumbs-up"></i>12</button>
+
+            <button type="button"><i class="icon ion-md-thumbs-down">7</i></button>*@
+        </div>
+
+        @*<button type="button"><i class="icon ion-ios-share-alt"></i>Reply</button>
+        <button type="button"><i class="icon ion-ios-quote"></i>Quote</button>*@
+        @if (Session["Ma"] != null)
+        {
+            <button onclick="showForm('@Model.MaComment')" type="button"><i class="icon ion-ios-share-alt"></i>trả lời</button>
+            <button onclick="confirmReport('@Model.MaComment')" type="button"><i class="icon ion-ios-alert"></i>Report</button>
+        }
+    </div>
+</li>
+<!-- end comment items -->
+<form style="display: none" method="post" class="form" id="form_@Model.MaComment">
+    <input type="hidden" id="isShow_@Model.MaComment" value="0" />
+
+    <input type="hidden" name="MaPhim" value="@Model.MaPhim" />
+    <input type="hidden" name="RepCommentID" value="@Model.MaComment" />
+    <input type="hidden" name="MaTap" id="MaTap" value="0" />
+    @{ string UserName = "@" + Model.User.Ten + " ";}
+    <textarea name="NoiDung" id="NoiDung_@Model.MaComment" placeholder="Nhập bình luận" class="form__textarea">@UserName</textarea>
+    <button onclick="submitCommentForm('@Model.MaComment','@UserName',0)" class="form__btn">Gửi</button>
+</form>
+<li class="comments__item comments__item--answer">
+    <div id="@Model.MaComment">
+    </div>
+</li>
+
+

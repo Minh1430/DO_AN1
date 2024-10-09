@@ -1,0 +1,72 @@
+﻿@model PagedList.IPagedList<WatchMovies.Models.Report>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" type="text/css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary text-center rounded p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Danh sách báo cáo comment</h6>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mb-4">
+        </div>
+        <div class="table-responsive">
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+                <tr class="text-white">
+                    <th>
+                        Nội dung comment
+                    </th>
+                    <th>
+                        Người báo cáo
+                    </th>
+                    <th>
+                        Thời gian
+                    </th>
+                    <th>
+                        Hành động
+                    </th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Comment.NoiDungComment)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.Ten)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NgayTao)
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-light" href="@Url.Action("Delete", "Reports", new {MaPhim=item.Comment.MaPhim, MaComment=item.MaComment, Xoa = false})">Bỏ qua</a>
+                            <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.MaComment', '@item.Comment.MaPhim')">Xóa</a>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+</div>
+<br />
+<div style="display:flex; align-items:center;flex-direction:column">
+    <span style="color:white">Trang @(Model.PageCount<Model.PageNumber?0:Model.PageNumber)/@Model.PageCount</span>
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+</div>
+@*thông báo xóa comment*@
+<script>
+    function confirmDelete(MaComment, MaPhim) {
+        var result = confirm("Xác nhận xóa comment này?");
+
+        if (result) {
+            // Nếu người dùng đồng ý xóa, chuyển đến action xóa trong controller
+            window.location = '/Admin/Reports/Delete?MaPhim=' + MaPhim + '&MaComment=' + MaComment + '&Xoa=true';
+        }
+    }
+</script>

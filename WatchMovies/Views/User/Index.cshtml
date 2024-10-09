@@ -1,0 +1,83 @@
+﻿@{
+    string img = "~/Content/img/User/" + Model.HinhAnh;
+}
+
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-3" style="border-right: 1px solid #dee2e6;">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                <img style="border-radius: 50%;" id="output" class="rounded-circle mt-5" width="150px" height="150px" src="@Url.Content(img)" />
+                <span class="labels">@Model.Ten</span>
+                <span class="labels">@Model.Email</span>
+            </div>
+        </div>
+        <div class="col-md-5" style="border-right: 1px solid #dee2e6;">
+            <div class="p-3 py-5">
+                <form id="formUpdate" enctype="multipart/form-data">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 style="font-size:20px" class="labels">Chỉnh sửa thông tin cá nhân</h2>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <input type="hidden" name="MaUser" value="@Model.MaUser" />
+                            <label class="labels">Ảnh đại diện</label><br />
+                            <input style="width:100%" type="file" name="hinhAnhFile" onchange="loadFile(event)" />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Họ và tên</label><br />
+                            <input style="width:100%" type="text" value="@Model.Ten" name="HoTen" />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Địa chỉ Email</label><br />
+                            <input style="width:100%" type="text" value="@Model.Email" name="Email" />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Số điện thoại</label><br />
+                            <input style="width:100%" type="text" value="@Model.SDT" name="SoDienThoai" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="mt-5 text-center">
+                        <button type="button" onclick="submitFormUpdate()" style="background-color: #ff55a5; padding: 10px; font-weight: 1000" class="labels">Lưu</button>
+                    </div>
+                    <div id="result"></div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <form id="formChangePass">
+                <div class="p-3 py-5">
+                    <div class="col-md-12">
+                        <h2 style="font-size:20px" class="labels">Đổi mật khẩu</h2>
+                    </div>
+                    <div class="col-md-12">
+                        <input type="hidden" name="MaUser" value="@Model.MaUser" />
+                        <label class="labels">Mật khẩu cũ</label>
+                        <input id="PassWord" style="width:100%" type="text" class="form-control" name="PassWord" />
+                    </div>
+                    <div class="col-md-12">
+                        <label class="labels">Mật khẩu mới</label><br />
+                        <input id="NewPassWord" style="width:100%" type="password" class="form-control" name="NewPassWord" />
+                    </div>
+                    <div class="col-md-12">
+                        <label class="labels">Xác nhận mật khẩu mới</label><br />
+                        <input id="ReNewPassWord" style="width:100%" type="password" class="form-control" name="ReNewPassWord" />
+                    </div>
+                    <br />
+                    <div class="col-md-12">
+                        <button type="button" onclick="submitFormChangePass()" style="background-color: #ff55a5; padding: 10px; font-weight:1000" class="labels">Đổi mật khẩu</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<style>
+    .labels {
+        font-size: 16px;
+        font-family: 'Times New Roman';
+    }
+</style>
+
+

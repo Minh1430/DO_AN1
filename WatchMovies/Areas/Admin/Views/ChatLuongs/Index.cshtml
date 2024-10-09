@@ -1,0 +1,61 @@
+﻿@model PagedList.IPagedList<WatchMovies.Models.ChatLuong>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" type="text/css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary text-center rounded p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Danh sách chất lượng</h6>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <a href="@Url.Action("Create","ChatLuongs")" class="btn btn-success">Thêm mới</a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+                <tr class="text-white">
+                    <th>
+                        Tên chất lượng
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ten)
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-info" href="@Url.Action("Details","ChatLuongs", new {id=item.MaChatLuong})">Xem</a>
+                            <a class="btn btn-sm btn-warning" href="@Url.Action("Edit","ChatLuongs", new {id=item.MaChatLuong})">Sửa</a>
+                            <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.MaChatLuong')">Xóa</a>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+</div>
+<br />
+<div style="display:flex; align-items:center;flex-direction:column">
+    <span style="color:white">Trang @(Model.PageCount<Model.PageNumber?0:Model.PageNumber)/@Model.PageCount</span>
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+</div>
+@*thông báo xóa chất lượng*@
+<script>
+    function confirmDelete(MaChatLuong) {
+        var result = confirm("Xác nhận xóa chất lượng này?");
+
+        if (result) {
+            // Nếu người dùng đồng ý xóa, chuyển đến action xóa trong controller
+            window.location = '/Admin/ChatLuongs/Delete/' + MaChatLuong;
+        }
+    }
+</script>

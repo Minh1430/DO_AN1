@@ -1,0 +1,77 @@
+﻿@model PagedList.IPagedList<WatchMovies.Models.User>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" type="text/css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary text-center rounded p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Danh sách User</h6>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <a href="@Url.Action("Create","Users")" class="btn btn-success">Thêm mới</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+                <tr class="text-white">
+                    <th>
+                        Tên người dùng
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Quyền truy cập
+                    </th>
+                    <th>
+                        Hành động
+                    </th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ten)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @foreach (var i in item.Quyen_Users)
+                            {
+                                <label>@i.Quyen.TenQuyen&nbsp;</label>
+                            }
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-info" href="@Url.Action("Details","Users", new {id=item.MaUser})">Xem</a>
+                            <a class="btn btn-sm btn-warning" href="@Url.Action("Edit","Users", new {id=item.MaUser})">Sửa</a>
+                            @*<a class="btn btn-sm btn-danger" href="@Url.Action("setDel","Users", new {id=item.MaUser})">Xóa</a>*@
+                            <a class="btn btn-sm btn-primary" onclick="confirmDelete('@item.MaUser')">Xóa</a>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+</div>
+<br />
+<div style="display:flex; align-items:center;flex-direction:column">
+    <span style="color:white">Trang @(Model.PageCount<Model.PageNumber?0:Model.PageNumber)/@Model.PageCount</span>
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+</div>
+
+<script>
+    function confirmDelete(MaUser) {
+        var result = confirm("Xác nhận xóa user?");
+
+        if (result) {
+            // Nếu người dùng đồng ý xóa, chuyển đến action xóa trong controller
+            window.location = '/Admin/Users/setDel/' + MaUser;
+        }
+    }
+</script>

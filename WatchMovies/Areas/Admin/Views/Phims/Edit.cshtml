@@ -1,0 +1,275 @@
+﻿@model WatchMovies.Models.Phim
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var path = "~/Content/img/film/" + Model.HinhAnh;
+}
+@if (Model.LoaiPhim == 2)
+{
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-secondary text-center rounded p-4">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h6 class="mb-0">Danh sách phần</h6>
+            </div>
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <a href="@Url.Action("Create", "Phans", new {MaPhim = Model.MaPhim})" class="btn btn-success">Thêm mới</a>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table text-start align-middle table-bordered table-hover mb-0">
+                    <thead>
+                        <tr class="text-white">
+                            @*<th scope="col"><input class="form-check-input" type="checkbox"></th>*@
+                            <th scope="col">Tên phần</th>
+                            <th scope="col">Người tạo</th>
+                            <th scope="col">Ngày tạo</th>
+                            <th scope="col">Người sửa gần nhất</th>
+                            <th scope="col">Ngày sửa gần nhất</th>
+                            <th scope="col">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.Phans)
+                        {
+                            var TenUserTao = WatchMovies.Models.Utils.GetUser(item.MaUserTao).Ten;
+                            var TenUserSua = WatchMovies.Models.Utils.GetUser(item.MaUserSua).Ten;
+                            <tr>
+                                @*<td><input class="form-check-input" type="checkbox"></td>*@
+                                <td>@item.TenPhan</td>
+                                <td>@TenUserTao</td>
+                                <td>@item.CreateAt</td>
+                                <td>@TenUserSua</td>
+                                <td>@item.UpdateAt</td>
+                                <td>
+                                    <a class="btn btn-sm btn-success" href="@Url.Action("Create","Taps", new {MaPhan=item.MaPhan})">Thêm tập</a>
+                                    <a class="btn btn-sm btn-info" href="@Url.Action("Index","Taps", new {MaPhan=item.MaPhan})">Danh sách tập</a>
+                                    <a class="btn btn-sm btn-warning" href="@Url.Action("Edit","Phans", new {id=item.MaPhan})">Sửa</a>
+                                    <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.MaPhan')">Xóa</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+
+
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary rounded h-100 p-4">
+        @using (Html.BeginForm("Edit", "Phims", new { area = "Admin" }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div>
+                <h4 class="mb-4">Phim</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.MaPhim)
+
+                <div class="row mb-3">
+                    @Html.Label("Tên Phim", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Ten, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Ten, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <script>
+                    // Bắt sự kiện thay đổi của select box
+                    function selectChanged(valueSelected) {
+                        // Ẩn tất cả các phần tử có id chứa label 'Link' và 'Phan'
+                        $('#linkDiv').hide();
+                        $('#phanDiv').hide();
+
+                        // Hiện phần tử tương ứng với giá trị được chọn
+                        if (valueSelected == '1') {
+                            $('#linkDiv').show(); // Hiện phần tử có id 'phanDiv' - chứa label 'Phan'
+                        } else if (valueSelected == '2') {
+                            $('#phanDiv').show(); // Hiện phần tử có id 'linkDiv' - chứa label 'Link'
+                        }
+                    }
+                </script>
+                <div class="row mb-3">
+                    @Html.Label("Loại Phim", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        <select class="form-control" id="LoaiPhim" name="LoaiPhim" onchange="selectChanged(this.value)">
+                            <option value="1">Phim lẻ</option>
+                            <option value="2">Phim bộ</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3" id="linkDiv">
+                    @Html.Label("Link", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Link, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Link, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    @Html.Label("Nội dung", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        <div class="form-floating">
+                            <textarea name="NoiDung" id="NoiDung" class="form-control" style="height: 250px;">@Model.NoiDung</textarea>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.NoiDung, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-10">
+                        <img id="output" style="width:120px; height:180px" src="@Url.Content(path)" /><br />
+                        @*<label>@Model.HinhAnh</label>*@
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    @Html.Label("Hình ảnh", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        <input type="file" name="hinhAnhFile" class="form-control" onchange="loadFile(event)" />
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    @Html.Label("Đạo diễn", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.DaoDien, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DaoDien, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    @Html.Label("Diễn viên", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.DienVien, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DienVien, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    @Html.Label("Quốc gia", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.QuocGia, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.QuocGia, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    @Html.Label("Năm sản xuất", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.NamSX, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.NamSX, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    @Html.Label("Thời lượng", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ThoiLuong, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ThoiLuong, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    @Html.Label("Lượt xem", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.LuotXem, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.LuotXem, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    @Html.Label("Số lượng đánh giá", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.SoLuongVote, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SoLuongVote, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    @Html.Label("Số sao", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.SoSao, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SoSao, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    @Html.Label("Số lượng bình luận", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.SoLuongComment, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SoLuongComment, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    @Html.Label("Chất lượng", "Chất lượng", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("MaChatLuong", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.MaChatLuong, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    @Html.Label("Thể loại", htmlAttributes: new { @class = "col-form-label col-sm-2 pt-0" })
+                    <div class="col-md-10">
+                        @if (Model.TheLoai_Phims != null)
+                        {
+                            foreach (var theLoai in ViewBag.TheLoais)
+                            {
+                                var isChecked = Model.TheLoai_Phims.Any(tp => tp.MaTheLoai == theLoai.MaTheLoai);
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="selectedTheLoais" value="@theLoai.MaTheLoai" @(isChecked ? "checked" : "") /> @theLoai.Ten
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            foreach (var theLoai in ViewBag.TheLoais)
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="selectedTheLoais" value="@theLoai.MaTheLoai" /> @theLoai.Ten
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Lưu" class="btn btn-success" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+<div class="container-fluid pt-4 px-4">
+    <div>
+        @Html.ActionLink("Quay lại", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+    </div>
+</div>
+@*Tải lại ảnh khi thay đổi trong input*@
+<script>
+    var phan = document.getElementById('#phan');
+    var loadFile = function (event) {
+        var image = document.getElementById('output');
+        image.src = URL.createObjectURL(event.target.files[0]);
+    }
+
+    function confirmDelete(MaPhan) {
+        var result = confirm("Xác nhận xóa phần này?");
+
+        if (result) {
+            // Nếu người dùng đồng ý xóa, chuyển đến action xóa trong controller
+            window.location = '/Admin/Phans/setDel/' + MaPhan;
+        }
+    }
+</script>
